@@ -9,3 +9,11 @@ class MessageListCreateView(generics.ListCreateAPIView):
     queryset = Message.objects.select_related('user', 'room')
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated]
+
+# class ChatDetail(generics.ListAPIView):
+#     serializer_class = MessageSerializer
+#     permission_classes = [IsAuthenticated]
+    
+#     def get_queryset(self):
+#         room_id = self.kwargs['room_id']
+#         return Message.objects.filter(room_id=room_id).select_related('user', 'room')
