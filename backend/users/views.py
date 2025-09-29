@@ -44,9 +44,9 @@ class CustomLoginView(APIView):
             }, status=status.HTTP_200_OK)
         return Response({"error":"Invalid Login credentials!"}, status= status.HTTP_401_UNAUTHORIZED)
 
-class GetUsersView(APIView):
+class GetUsersView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class =  UserSerializer
 
-    def getUser(self):
-        pass
+    def get_queryset(self):
+        return User.objects.all()

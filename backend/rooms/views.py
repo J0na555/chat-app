@@ -1,8 +1,8 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .models import Room
-from chat_messages.serializer import MessageSerializer
-from .serializer import RoomSerializer
+from chat_messages.serializers import MessageSerializer
+from .serializers import RoomSerializer
 
 class RoomListCreateView(generics.ListCreateAPIView):
     queryset = Room.objects.all()

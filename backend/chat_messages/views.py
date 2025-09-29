@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from .models import Message
-from .serializer import MessageSerializer
+from .serializers import MessageSerializer
 
 
 
