@@ -50,3 +50,11 @@ class GetUsersView(generics.ListAPIView):
 
     def get_queryset(self):
         return User.objects.all()
+
+
+class GetUsersDetail(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
+    queryset = User.objects.all() 
+    lookup_field = 'id'
+    
