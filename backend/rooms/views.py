@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .models import Room
 from chat_messages.serializers import MessageSerializer
@@ -24,6 +24,18 @@ class RoomDetailView(generics.RetrieveAPIView):
     lookup_field = 'id'
     
 
+class RoomUpdateView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = RoomSerializer
+    queryset = Room.objects.all()
+    lookup_field = 'id'    
+
+class RoomDeleteView(generics.DestroyAPIView):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    queryset = Room.objects.all()
+    lookup_field = 'id'
+    
 
 class ChatDetail(generics.ListAPIView):
     serializer_class = MessageSerializer
