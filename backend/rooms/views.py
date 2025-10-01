@@ -37,10 +37,3 @@ class RoomDeleteView(generics.DestroyAPIView):
     lookup_field = 'id'
     
 
-class ChatDetail(generics.ListAPIView):
-    serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        room_id = self.kwargs['room_id']
-        return Room.objects.filter(room__id=room_id).select_related('user', 'room')

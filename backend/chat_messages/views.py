@@ -20,3 +20,16 @@ class GetMessages(generics.ListAPIView):
     def get_queryset(self):
         room_id = self.kwargs['room_id']
         return Message.objects.filter(room_id=room_id)
+
+class UpdateMessagesView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = MessageSerializer
+    queryset = Message.objects.all()
+    lookup_field = 'id'
+
+
+class DeleteMessagesView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = MessageSerializer
+    queryset = Message.objects.all()
+    lookup_field = 'id'
