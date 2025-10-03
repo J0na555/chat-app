@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-tk)^*5=j^9y+js9o=v03!jf$ux4l7bcbcja9-=vi7t%aal4-r+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -41,11 +41,23 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'channels',
     'core',
     'users',
     'rooms',
     'chat_messages',
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+ASGI_APPLICATION = 'chat.asgi.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
