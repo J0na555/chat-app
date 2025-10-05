@@ -1,3 +1,4 @@
+from asyncio.log import logger
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.models import User
@@ -35,24 +36,33 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        text = text_data_json['text']
+        logger.debug(f"Recieved data: {text_data}")
+        try:
+            text_data_json = json.loads(text_data)
+            text = text_data_json['text']
 
-        # Save message to database
-        message = await self.save_message(text)
+            if not text:
+                await self.send(text_data= json.dumps({'error':'Text us required'}))
+                return
 
-        # Serialize message
-        serializer = MessageSerializer(message)
-        message_data = serializer.data
 
-        # Broadcast to room group
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': message_data
-            }
-        )
+            # Save message to database
+            message = await self.save_message(text)
+
+            # Serialize message
+            serializer = MessageSerializer(message)
+            message_data = serializer.data
+
+            # Broadcast to room group
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message': message_data
+                }
+            )
+        except json.JSONDecodeError:
+            await self.send(text_data=({'error':'Invalid JSON'}))
 
     async def chat_message(self, event):
         # Send message to WebSocket
